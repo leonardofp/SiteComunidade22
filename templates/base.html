@@ -11,36 +11,20 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg bg-light">
-  <div class="container-fluid container">
-    <a class="navbar-brand" href="#">Meu site</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/homepage">Inicio</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/usuarios">Usuarios</a>
-        </li>
 
-         <li class="nav-item">
-          <a class="nav-link" href="/contato">Contato</a>
-        </li>
-      </ul>
-      <ul class="d-flex navbar-nav ">
-          <li class="nav-item">
-          <a class="nav-link" href="/login">Login</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/login">Criar conta</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
+
+    {% include 'navbar.html' %}
+
+    {% with mensagens = get_flashed_messages(with_categories=True)%}
+        {% if mensagens %}
+            {%for categoria, mensagem in mensagens %}
+                <div class="alert {{ categoria }}">
+                    {{ mensagem }}
+                 </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
 
     {% block body %}
     {% endblock %}
