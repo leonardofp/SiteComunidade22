@@ -17,6 +17,7 @@ def contato():
 
 
 @app.route("/usuarios")
+@login_required
 def usuarios():
     return render_template('usuarios.html', lista_usuarios=lista_usuarios)
 
@@ -30,7 +31,11 @@ def login():
         if usuario and bcrypt.check_password_hash(usuario.senha, form_login.senha.data):
             login_user(usuario, remember=form_login.lembrar_dados.data)
             flash(f'Login feito com sucessono e-mail: {form_login.email.data}', 'alert-success')
-            return redirect(url_for('home'))
+            par_next = request.args.get('next')
+            if par_next:
+                return redirect(par_next)
+            else:
+                return redirect(url_for('home'))
         else:
             flash(f'Falha no Login. E-mail ou senha incorretos', 'alert-danger')
 
@@ -42,4 +47,22 @@ def login():
         flash(f'Conta criado com e-mail: {form_criarconta.email.data}', 'alert-success')
         return redirect(url_for('home'))
     return render_template('login.html', form_login=form_login, form_criarconta=form_criarconta)
+
+@app.route('/sair')
+@login_required
+def sair():
+    logout_user()
+    flash(f'Logout feito com sucesso', 'alert-success')
+    return redirect(url_for('home'))
+
+@app.route('/perfil')
+@login_required
+def perfil():
+
+    return render_template('perfil.html')
+
+@app.route('/poste/criar')
+@login_required
+def criar_post():
+    return render_template('criarpost.html')
 
